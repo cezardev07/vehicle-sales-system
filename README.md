@@ -18,7 +18,11 @@ docker-compose up -d
 ## Configuração do Node 🐢
 
 1. Certifique-se de que o Node esteja instalado no seu sistema na versão v20.11.0 ou superior.
-2. Execute o seguinte comando para iniciar a api:
+2. Execute os seguinte comandos para iniciar a api:
+
+```bash
+yarn
+```
 
 ```bash
 yarn dev
