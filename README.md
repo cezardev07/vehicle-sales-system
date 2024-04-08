@@ -48,40 +48,49 @@ docker ps
 
 ## Estrutura de Dados:
 
-- [x] VENDEDOR:
-    - ID
-    - NOME
-    - SENHA
-    - USERNAME (PARA FAZER LOGIN)
-    - TELEFONE
-    - LISTA DE VEICULOS Á VENDA => VEICULOS[]
-    - DATA QUE FOI PUBLICADO
-    - DATA QUE FOI ATUALIZADO
-    
-- [x] VEICULOS: 
-    - ID
-    - ID-VENDEDO
-    - VENDEDOR VENDENDOR[FIELS: ID-VENDEDO, REFERENCES: ID]
-    - NOME 
-    - MARCA
-    - DESCRIÇÃO
-    - PREÇO DO VEICULO A VENDA
-    - LISTA DE IMAGENS DO VEICULO => IMAGENS[]
-    - KM DO VEICULO
-    - ANO DO VEICULO
-    - CIDADE DO VEICULO
-    - CÂMBIO DO VEICULO (AUTOMÁTICO OU MANUAL)
-    - DATA QUE FOI PUBLICADO
-    - DATA QUE FOI ATUALIZADO
+```prisma
+model Vendedor {
+  id          String       @id @default(uuid())
+  nome        String
+  senha       String
+  telefone    String
+  username    String    @unique
+  veiculos    Veiculo[] // Relacionamento de um para muitos com Veiculo
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
 
-- [x] IMAGENS:
-    - ID
-    - NOME DA IMAGE
-    - ID-VEICULO
-    - VEICULO VEICULO[FIELS: ID-VEICULO, REFERENCES: ID]
-    - IMAGE
-    - DATA QUE FOI PUBLICADO
-    - DATA QUE FOI ATUALIZADO
+  @@map("vendedor")
+}
+
+model Veiculo {
+  id            String       @id @default(uuid())
+  vendedorId    String
+  vendedor      Vendedor  @relation(fields: [vendedorId], references: [id])
+  nome          String
+  marca         String
+  descricao     String
+  preco         Float
+  imagens       Imagem[]  // Relacionamento de um para muitos com Imagem
+  km            Int
+  cidade        String
+  cambio        String    // Pode ser uma enumeração entre "Automático" e "Manual"
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  @@map("veiculo")
+}
+
+model Imagem {
+  id            String       @id @default(uuid())
+  nomeDaImagem  String
+  veiculoId     String
+  veiculo       Veiculo   @relation(fields: [veiculoId], references: [id])
+  imagem        String    // Isso poderia ser um URL ou caminho do arquivo, dependendo de onde você armazena as imagens
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  @@map("imagem")
+}
+```
 
 - [x] SE POSSIVEL FAZER UM CRIPTOGRAFIA DE SENHA COM BCRYPT
 
