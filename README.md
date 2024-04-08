@@ -50,14 +50,14 @@ docker ps
 
 ```prisma
 model Vendedor {
-  id          String       @id @default(uuid())
+  id          String         @id @default(uuid())
   nome        String
   senha       String
   telefone    String
-  username    String    @unique
-  veiculos    Veiculo[] // Relacionamento de um para muitos com Veiculo
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  username    String         @unique
+  veiculos    Veiculo[]      // Relacionamento de um para muitos com Veiculo
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
 
   @@map("vendedor")
 }
@@ -65,17 +65,17 @@ model Vendedor {
 model Veiculo {
   id            String       @id @default(uuid())
   vendedorId    String
-  vendedor      Vendedor  @relation(fields: [vendedorId], references: [id])
+  vendedor      Vendedor     @relation(fields: [vendedorId], references: [id])
   nome          String
   marca         String
   descricao     String
   preco         Float
-  imagens       Imagem[]  // Relacionamento de um para muitos com Imagem
+  imagens       Imagem[]     // Relacionamento de um para muitos com Imagem
   km            Int
   cidade        String
-  cambio        String    // Pode ser uma enumeração entre "Automático" e "Manual"
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  cambio        String       // Pode ser uma enumeração entre "Automático" e "Manual"
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
 
   @@map("veiculo")
 }
@@ -84,10 +84,10 @@ model Imagem {
   id            String       @id @default(uuid())
   nomeDaImagem  String
   veiculoId     String
-  veiculo       Veiculo   @relation(fields: [veiculoId], references: [id])
-  imagem        String    // Isso poderia ser um URL ou caminho do arquivo, dependendo de onde você armazena as imagens
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  veiculo       Veiculo      @relation(fields: [veiculoId], references: [id])
+  imagem        String       // Isso poderia ser um URL ou caminho do arquivo, dependendo de onde você armazena as imagens
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
   @@map("imagem")
 }
 ```
