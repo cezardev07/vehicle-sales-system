@@ -1,0 +1,59 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Vendedor {
+  id          String       @id @default(uuid())
+  nome        String
+  senha       String
+  telefone    String
+  username    String    @unique
+  veiculos    Veiculo[] // Relacionamento de um para muitos com Veiculo
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  // imagens     Imagem[] 
+
+  @@map("vendedor")
+}
+
+model Veiculo {
+  id            String       @id @default(uuid())
+  vendedorId    String
+  vendedor      Vendedor  @relation(fields: [vendedorId], references: [id])
+  nome          String
+  marca         String
+  descricao     String
+  preco         Float
+  imagens       Imagem[]  // Relacionamento de um para muitos com Imagem
+  km            Int
+  cidade        String
+  cambio        String    // Pode ser uma enumeração entre "Automático" e "Manual"
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  @@map("veiculo")
+}
+
+model Imagem {
+  id            String       @id @default(uuid())
+  nomeDaImagem  String
+  veiculoId     String
+  veiculo       Veiculo   @relation(fields: [veiculoId], references: [id])
+  // vendedorId    String
+  // vendedor      Vendedor   @relation(fields: [vendedorId], references: [id])
+  imagem        String    // Isso poderia ser um URL ou caminho do arquivo, dependendo de onde você armazena as imagens
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  @@map("imagem")
+}
